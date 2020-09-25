@@ -8,3 +8,6 @@ target
 /RUNNING_PID
 
 .g8/
+.bsp/
+.metals/
+.vscode/
