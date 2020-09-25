@@ -1,14 +1,28 @@
-name := """scala3-chimera"""
-organization := "com.example"
+ThisBuild / name := """play-scala-seed"""
+ThisBuild / organization := "com.example"
+ThisBuild / version := "1.0-SNAPSHOT"
 
-version := "1.0-SNAPSHOT"
+val scala213 = "2.13.4-bin-d66ebf4"
+val scala3 = "0.27.0-RC1"
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala)
+ThisBuild / resolvers += "scala-integration" at "https://scala-ci.typesafe.com/artifactory/scala-integration/"
 
-scalaVersion := "2.13.3"
+lazy val app = (project in file("."))
+.enablePlugins(PlayScala)
+.settings(
+    scalaVersion := scala213,
+    libraryDependencies ++= Seq(
+        guice,
+        "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test
+    )
+)
+.dependsOn(domain)
+.aggregate(domain)
 
-libraryDependencies += guice
-libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test
+lazy val domain = project
+.settings(
+    scalaVersion := scala3
+)
 
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "com.example.controllers._"
