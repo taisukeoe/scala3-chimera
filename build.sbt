@@ -16,8 +16,19 @@ lazy val app = (project in file("."))
         "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test
     )
 )
-.dependsOn(domain)
-.aggregate(domain)
+.dependsOn(adapter, utils)
+.aggregate(utils, adapter, domain)
+
+lazy val utils = project
+.settings(
+    scalaVersion := scala3
+).dependsOn(adapter)
+
+lazy val adapter = project
+.settings(
+    scalaVersion := scala213,
+    libraryDependencies += "com.typesafe.play" %% "play-json" % "2.9.1"
+).dependsOn(domain)
 
 lazy val domain = project
 .settings(

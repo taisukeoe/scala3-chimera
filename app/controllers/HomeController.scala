@@ -3,6 +3,9 @@ package controllers
 import javax.inject._
 import play.api._
 import play.api.mvc._
+import domain._
+import adapter._
+import utils._
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
@@ -21,7 +24,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
   def index = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.index())
   }
-  def hello(name: String) = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.hello(domain.User(name)))
+  def hello(id: User.Id, name: User.Name) = Action { implicit request: Request[AnyContent] =>
+    Ok(Converter.toJson(Post(User(id, name), "Hello, world!")))
   }
 }

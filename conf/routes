@@ -5,7 +5,8 @@
 
 # An example controller showing a sample home page
 GET     /                           controllers.HomeController.index
-GET     /:name                      controllers.HomeController.hello(name: String)
+# You can't use opaque type here, because Routes.scala calls `classOf` them while opaque type will be encoded type alias, not class in runtime.
+GET     /:id/:name                      controllers.HomeController.hello(id: Int, name: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
