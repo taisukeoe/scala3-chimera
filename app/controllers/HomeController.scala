@@ -24,7 +24,8 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
   def index = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.index())
   }
-  def hello(id: User.Id, name: User.Name) = Action { implicit request: Request[AnyContent] =>
-    Ok(Converter.toJson(Post(User(id, name), "Hello, world!")))
+  def hello(id: Int, name: String) = Action { implicit request: Request[AnyContent] =>
+    import User._
+    Ok(Converter.toJson(Post(User(Id(id), Name(name)), "Hello, world!")))
   }
 }

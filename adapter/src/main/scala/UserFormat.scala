@@ -7,13 +7,20 @@ import play.api.libs.functional.syntax._
 import domain._
 
 object UserFormat {
-    // Failed to expand User by macro
-    // implicit val userFormat: Format[User] = Json.format[User]
+    /*
+     * Failed to expand User by macro due to the absense of unapply
+     * Unapply of domain.User has no parameters. Are you using an empty case class?
+     * [error]     implicit val userFormat: Format[User] = Json.format[User]
+     * [error]                                                        ^
+     */ 
+    
+     // implicit val userFormat: Format[User] = Json.format[User]
 
     // Explicit read codec works fine. 
+    
     implicit val userReads: Reads[User] = (
-        (JsPath \ "id").read[Int] and 
-          (JsPath \ "name").read[String]
+        (JsPath \ "id").read[Int].map(User.Id.apply) and 
+          (JsPath \ "name").read[String].map(User.Name.apply)
     )(User.apply _)
     
     /*
@@ -28,5 +35,5 @@ object UserFormat {
     implicit val userWrites: Writes[User] = (
       (JsPath \ "id").write[Int] and    
       (JsPath \ "name").write[String]
-    )(u => (u.id, u.name))
+    )(u => (u.id.asInstanceOf[Int], u.name.asInstanceOf[String]))
 }
