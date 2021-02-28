@@ -26,6 +26,15 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
   }
   def hello(id: Int, name: String) = Action { implicit request: Request[AnyContent] =>
     import User._
+
+    // Using `given` value from `Scala 2.13` seems not to work.
+    //
+    // [error] illegal cyclic reference involving object Json
+    // [error]     Ok(Json.toJson(Post(User(Id(id), Name(name)), "Hello, world!")))
+    // [error]             ^
+    // [error] one error found
+    //
+    // So `Converter` or intermediate function helps this to compile.
     Ok(Converter.toJson(Post(User(Id(id), Name(name)), "Hello, world!")))
   }
 }
