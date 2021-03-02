@@ -30,7 +30,11 @@ lazy val utils = project
 lazy val adapter = project
 .settings(
     scalaVersion := scala3,
-    libraryDependencies += "com.typesafe.play" %% "play-json" % "2.10.0-RC2"
+    libraryDependencies ++= 
+    Seq(
+        "com.typesafe.play" %% "play-json" % "2.10.0-RC2",
+        "org.scalatest" %% "scalatest" % "3.2.5" % Test
+    )
 ).dependsOn(domain)
 
 lazy val domain = project
