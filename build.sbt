@@ -1,8 +1,8 @@
 ThisBuild / organization := "com.example"
 ThisBuild / version := "1.0-SNAPSHOT"
 
-val scala213 = "2.13.5"
-val scala3 = "3.0.0-RC1"
+val scala213 = "2.13.6-bin-9468b9a"
+val scala3 = "3.0.0"
 
 ThisBuild / resolvers += "scala-integration" at "https://scala-ci.typesafe.com/artifactory/scala-integration/"
 
@@ -32,8 +32,8 @@ lazy val adapter = project
     scalaVersion := scala3,
     libraryDependencies ++= 
     Seq(
-        "com.typesafe.play" %% "play-json" % "2.10.0-RC2",
-        "org.scalatest" %% "scalatest" % "3.2.5" % Test
+        ("com.typesafe.play" % "play-json" % "2.10.0-RC2").cross(CrossVersion.for3Use2_13),
+        "org.scalatest" %% "scalatest" % "3.2.9" % Test
     )
 ).dependsOn(domain)
 
