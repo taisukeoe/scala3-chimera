@@ -1,20 +1,23 @@
 ThisBuild / organization := "com.example"
 ThisBuild / version := "1.0-SNAPSHOT"
 
-val scala213 = "2.13.5-bin-ff7e79c"
-val scala3 = "3.0.0-M3"
+val scala213 = "2.13.5"
+val scala3 = "3.0.0-RC1"
 
 ThisBuild / resolvers += "scala-integration" at "https://scala-ci.typesafe.com/artifactory/scala-integration/"
+
+val scala2OptionSetting = scalacOptions ++= Seq("-Xsource:3", "-Ytasty-reader")
 
 lazy val app = (project in file("."))
 .enablePlugins(PlayScala)
 .settings(
     scalaVersion := scala213,
-    scalacOptions ++= Seq("-Xsource:3", "-Ytasty-reader"),
+    scala2OptionSetting,
     libraryDependencies ++= Seq(
         guice,
-        "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test
-    )
+        "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test
+    ),
+    libraryDependencies := libraryDependencies.value.map(_ exclude("com.typesafe.play", "play-json_2.13"))
 )
 .dependsOn(adapter, utils)
 .aggregate(utils, adapter, domain)
@@ -26,9 +29,12 @@ lazy val utils = project
 
 lazy val adapter = project
 .settings(
-    scalaVersion := scala213,
-    scalacOptions ++= Seq("-Xsource:3", "-Ytasty-reader"),
-    libraryDependencies += "com.typesafe.play" %% "play-json" % "2.9.1"
+    scalaVersion := scala3,
+    libraryDependencies ++= 
+    Seq(
+        "com.typesafe.play" %% "play-json" % "2.10.0-RC2",
+        "org.scalatest" %% "scalatest" % "3.2.5" % Test
+    )
 ).dependsOn(domain)
 
 lazy val domain = project

@@ -6,6 +6,6 @@ import play.api.libs.json._
 case class Post(user: User, content: String)
 
 object Post {
-    import adapter.UserFormat._
-    implicit val postFormat: Format[Post] = Json.format[Post]
+    import adapter.UserFormat.given
+    given Format[Post] = Format.of[Post]
 }

@@ -3,7 +3,7 @@ package utils
 import domain._
 import adapter._
 import User._
-import UserFormat._
+import UserFormat.given
 import play.api.libs.json._
 
 object Converter {
